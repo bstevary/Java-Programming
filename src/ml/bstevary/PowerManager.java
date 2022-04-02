@@ -4,36 +4,20 @@ package ml.bstevary;
 import java.util.Scanner;
 
 public class PowerManager {
-
+   static int A,B,C;
 
     final  static int MITERLIMIT =1200,SEC_PER_HOUR=3600, SEC_PER_MIN=60, COST_1_30_MIN=10,COST_AFTER_30_MIN=5;
+
+
     public static void main(String[] ARs) {
-        int A,B,C,totalBilling,billing4A,billing4B,billing4C, timeASec,timeBSec ,timeCSec;
+        inputs();
+       calculator();
+    }
+
+
+    static void calculator(){
+        int totalBilling,billing4A,billing4B,billing4C, timeASec,timeBSec ,timeCSec;
         float timeAHrs,timeBHrs ,timeCHrs,lastTime ;
-        Scanner read=new Scanner(System.in);
-        while (true){
-        System.out.print("Enter the rate of Bulb A:");
-        A=read.nextInt();
-        if (A>=1&&A<1200)
-            break;
-            System.out.println("The rating should be between 1 and 1200... kindly recheck your inputs");
-        }
-        while (true){
-            System.out.print("Enter the rate of Bulb B:");
-            B=read.nextInt();
-            if (B>=1&&B<1200)
-                break;
-            System.out.println("The rating should be between 1 and 1200... kindly recheck your inputs");
-        }
-        while (true){
-            System.out.print("Enter the rate of Bulb C:");
-            C=read.nextInt();
-            if (C>=1&&C<1200)
-                break;
-            System.out.println("The rating should be between 1 and 1200... kindly recheck your inputs");
-        }
-        //time for devices
-        
         timeASec= ratingToSec(A);
         timeBSec= ratingToSec(B);
         timeCSec= ratingToSec(C);
@@ -41,14 +25,13 @@ public class PowerManager {
         timeAHrs=toHours(timeASec);
         timeBHrs=toHours(timeBSec);
         timeCHrs=toHours(timeCSec);
+
         lastTime=timeCHrs>(timeAHrs>timeBHrs?timeAHrs:timeBHrs)?timeCHrs:(timeAHrs>timeBHrs?timeAHrs:timeBHrs);
 
         billing4A=billing(timeASec);
         billing4B=billing(timeBSec);
         billing4C=billing(timeCSec);
         totalBilling=billing4A+billing4B+billing4C;
-
-        //program outputs
         System.out.println("Device A will be off after"+" "+timeAHrs+" hours");
         System.out.println("Device B will be off after"+" "+timeBHrs+" hours");
         System.out.println("Device C will be off after"+" "+timeCHrs+" hours");
@@ -77,16 +60,36 @@ public class PowerManager {
 
     }
     static float toHours(int timeSec){
-        float timesec=timeSec;
-        float hours= timesec/(SEC_PER_HOUR);
-        System.out.println();
-        return hours;
+        return (float) timeSec/(SEC_PER_HOUR);
     }
     static int ratingToSec(int rating){
-        int results=(MITERLIMIT *SEC_PER_MIN)/rating;
-        System.out.println("inside function");
-        System.out.println(results);
-        return results;
+        return (MITERLIMIT *SEC_PER_MIN)/rating;
+    }
+    static void inputs(){
+
+        Scanner read=new Scanner(System.in);
+        while (true){
+            System.out.print("Enter the rate of Bulb A:");
+            A=read.nextInt();
+            if (A>=1&&A<1200)
+                break;
+            System.out.println("The rating should be between 1 and 1200... kindly recheck your inputs");
+        }
+        while (true){
+            System.out.print("Enter the rate of Bulb B:");
+            B=read.nextInt();
+            if (B>=1&&B<1200)
+                break;
+            System.out.println("The rating should be between 1 and 1200... kindly recheck your inputs");
+        }
+        while (true){
+            System.out.print("Enter the rate of Bulb C:");
+            C=read.nextInt();
+            if (C>=1&&C<1200)
+                break;
+            System.out.println("The rating should be between 1 and 1200... kindly recheck your inputs");
+        }
+
     }
         
 }
