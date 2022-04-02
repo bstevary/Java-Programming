@@ -1,14 +1,15 @@
 package ml.bstevary;
 
+
 import java.util.Scanner;
 
 public class PowerManager {
 
-    final  static int POWERLIMIT=1200,COST_1_30_MIN=10,COST_AFTER_30_MIN=5;
-    public static void main(String[] args) {
-        int A,B,C,timeA,timeB,timeC,results,totalTime;
 
-
+    final  static int MITERLIMIT =1200,SEC_PER_HOUR=3600, SEC_PER_MIN=60, COST_1_30_MIN=10,COST_AFTER_30_MIN=5;
+    public static void main(String[] ARs) {
+        int A,B,C,totalBilling,billing4A,billing4B,billing4C, timeASec,timeBSec ,timeCSec;
+        float timeAHrs,timeBHrs ,timeCHrs,lastTime ;
         Scanner read=new Scanner(System.in);
         while (true){
         System.out.print("Enter the rate of Bulb A:");
@@ -32,17 +33,60 @@ public class PowerManager {
             System.out.println("The rating should be between 1 and 1200... kindly recheck your inputs");
         }
         //time for devices
+        
+        timeASec= ratingToSec(A);
+        timeBSec= ratingToSec(B);
+        timeCSec= ratingToSec(C);
 
-        timeA=calculator(A);
-        timeB=calculator(B);
-        timeC=calculator(C);
-        System.out.println(timeA+""+timeB+""+timeC);
+        timeAHrs=toHours(timeASec);
+        timeBHrs=toHours(timeBSec);
+        timeCHrs=toHours(timeCSec);
+        lastTime=timeCHrs>(timeAHrs>timeBHrs?timeAHrs:timeBHrs)?timeCHrs:(timeAHrs>timeBHrs?timeAHrs:timeBHrs);
+
+        billing4A=billing(timeASec);
+        billing4B=billing(timeBSec);
+        billing4C=billing(timeCSec);
+        totalBilling=billing4A+billing4B+billing4C;
+
+        //program outputs
+        System.out.println("Device A will be off after"+" "+timeAHrs+" hours");
+        System.out.println("Device B will be off after"+" "+timeBHrs+" hours");
+        System.out.println("Device C will be off after"+" "+timeCHrs+" hours");
+        System.out.println("###############################################");
+
+        System.out.println("After"+" "+lastTime+" hours all devices will be off");
+        System.out.println("###############################################");
+
+        System.out.println("You will pay Ksh."+billing4A+" for powering device A");
+        System.out.println("You will pay Ksh."+billing4B+" for powering device B");
+        System.out.println("You will pay Ksh."+billing4C+" for powering device C");
+        System.out.println("###############################################");
+
+        System.out.println("So you will have to pay Ksh."+totalBilling+" for power");
+        System.out.println("###############################################");
+    }
+    static int billing(int timeInSec){
+        int billing=0;
+        if (timeInSec>=30)
+            billing=COST_1_30_MIN*30;
+        if (timeInSec>30)
+            billing+=COST_AFTER_30_MIN*(timeInSec-30);
+        if (timeInSec<30)
+            billing=timeInSec*COST_1_30_MIN;
+        return billing;
 
     }
-    static int calculator(int a){
-
-        int results=POWERLIMIT/a;
-        return results ;
+    static float toHours(int timeSec){
+        float timesec=timeSec;
+        float hours= timesec/(SEC_PER_HOUR);
+        System.out.println();
+        return hours;
     }
-
+    static int ratingToSec(int rating){
+        int results=(MITERLIMIT *SEC_PER_MIN)/rating;
+        System.out.println("inside function");
+        System.out.println(results);
+        return results;
+    }
+        
 }
